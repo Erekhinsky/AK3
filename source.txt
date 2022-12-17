@@ -1,0 +1,26 @@
+:data:
+L1 "H"
+L2 "e"
+L3 "l"
+L4 "l"
+L5 "o"
+L6 " "
+L7 "W"
+L8 "o"
+L9 "r"
+L10 "l"
+L11 "d"
+L12 "!"
+LEN 12
+CUR 0
+:start:
+MOV AC CUR
+INC
+CMP AC LEN
+JE :exit:
+MOV CUR AC
+MOV AC &CUR
+OUT
+JMP :start:
+:exit:
+HLT

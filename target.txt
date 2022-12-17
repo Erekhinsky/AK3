@@ -1,0 +1,250 @@
+[
+    {
+        "opcode": "data",
+        "term": [
+            1,
+            "data",
+            [
+                "L1",
+                "\"H\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            2,
+            "data",
+            [
+                "L2",
+                "\"e\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            3,
+            "data",
+            [
+                "L3",
+                "\"l\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            4,
+            "data",
+            [
+                "L4",
+                "\"l\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            5,
+            "data",
+            [
+                "L5",
+                "\"o\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            6,
+            "data",
+            [
+                "L6",
+                "\"",
+                "\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            7,
+            "data",
+            [
+                "L7",
+                "\"W\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            8,
+            "data",
+            [
+                "L8",
+                "\"o\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            9,
+            "data",
+            [
+                "L9",
+                "\"r\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            10,
+            "data",
+            [
+                "L10",
+                "\"l\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            11,
+            "data",
+            [
+                "L11",
+                "\"d\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            12,
+            "data",
+            [
+                "L12",
+                "\"!\""
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            13,
+            "data",
+            [
+                "LEN",
+                "12"
+            ]
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            14,
+            "data",
+            [
+                "CUR",
+                "0"
+            ]
+        ]
+    },
+    {
+        "opcode": "MOV",
+        "term": [
+            15,
+            "MOV",
+            [
+                "AC",
+                [
+                    14,
+                    "0"
+                ]
+            ]
+        ]
+    },
+    {
+        "opcode": "INC",
+        "term": [
+            16,
+            "INC",
+            []
+        ]
+    },
+    {
+        "opcode": "CMP",
+        "term": [
+            17,
+            "CMP",
+            [
+                "AC",
+                [
+                    13,
+                    "12"
+                ]
+            ]
+        ]
+    },
+    {
+        "opcode": "JE",
+        "term": [
+            18,
+            "JE",
+            23
+        ]
+    },
+    {
+        "opcode": "MOV",
+        "term": [
+            19,
+            "MOV",
+            [
+                [
+                    14,
+                    "0"
+                ],
+                "AC"
+            ]
+        ]
+    },
+    {
+        "opcode": "MOV",
+        "term": [
+            20,
+            "MOV",
+            [
+                "AC",
+                14
+            ]
+        ]
+    },
+    {
+        "opcode": "OUT",
+        "term": [
+            21,
+            "OUT",
+            []
+        ]
+    },
+    {
+        "opcode": "JMP",
+        "term": [
+            22,
+            "JMP",
+            15
+        ]
+    },
+    {
+        "opcode": "HLT",
+        "term": [
+            23,
+            "HLT",
+            []
+        ]
+    }
+]
