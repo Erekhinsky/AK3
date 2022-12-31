@@ -8,12 +8,13 @@ class Opcode(str, Enum):
     # Коды операций, представленных на уровне языка.
     CMP = 'CMP'
     JE = 'JE'
-    MOV = 'MOV'
-    DIV = 'DIV'
-    MUL = 'MUL'
+    JMP = 'JMP'
+    ST = 'ST'
+    LD_VAL = 'LD_VAL'
+    LD_ADDR = 'LD_ADDR'
+    MOD = 'MOD'
     INC = 'INC'
     DEC = "DEC"
-    JMP = 'JMP'
     ADD = 'ADD'
     SUB = 'SUB'
     IN = 'IN'
@@ -24,22 +25,23 @@ class Opcode(str, Enum):
 
 class Register(str, Enum):
     AC = 'AC'
-    BR = 'BR'
     SR = 'SR'
 
 
 opcode_args = {
-    Opcode.CMP: 2,
+    Opcode.CMP: 1,
     Opcode.JE: 1,
-    Opcode.MOV: 2,
-    Opcode.DIV: 2,
+    Opcode.MOD: 1,
     Opcode.INC: 0,
     Opcode.DEC: 0,
     Opcode.JMP: 1,
-    Opcode.ADD: 2,
+    Opcode.ADD: 1,
     Opcode.HLT: 0,
-    Opcode.IN: 1,
-    Opcode.OUT: 1
+    Opcode.LD_ADDR: 1,
+    Opcode.LD_VAL: 1,
+    Opcode.IN: 0,
+    Opcode.ST: 1,
+    Opcode.OUT: 0
 }
 
 

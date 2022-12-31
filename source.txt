@@ -1,26 +1,30 @@
 :data:
-L1 "H"
-L2 "e"
-L3 "l"
-L4 "l"
-L5 "o"
-L6 " "
-L7 "W"
-L8 "o"
-L9 "r"
-L10 "l"
-L11 "d"
-L12 "!"
-LEN 12
-CUR 0
+L1 'H'
+L2 'e'
+L3 'l'
+L4 'l'
+L5 'o'
+L6 ' '
+L7 'W'
+L8 'o'
+L9 'r'
+L10 'l'
+L11 'd'
+L12 '!'
+L13 '\0'
+CUR_ADDR 0
+END '\0'
 :start:
-MOV AC CUR
-INC
-CMP AC LEN
+LD_ADDR L1
+ST CUR_ADDR
+:loop:
+LD_VAL AC
+CMP END
 JE :exit:
-MOV CUR AC
-MOV AC &CUR
 OUT
-JMP :start:
+LD_VAL CUR_ADDR
+INC
+ST CUR_ADDR
+JMP :loop:
 :exit:
 HLT
