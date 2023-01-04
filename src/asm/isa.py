@@ -1,7 +1,6 @@
 import json
 from collections import namedtuple
 from enum import Enum
-from sys import argv
 
 
 class Opcode(str, Enum):
@@ -49,19 +48,17 @@ class Term(namedtuple('Term', 'line operation argument')):
     """Полное описание инструкции."""
 
 
-def write_code(filename, code):
-    with open(filename, "w", encoding="utf-8") as file:
-        file.write(json.dumps(code, indent=4))
+# def write_code(filename, code):
+#     with open(filename, "w", encoding="utf-8") as file:
+#         file.write(json.dumps(code, indent=4))
 
-
-def read_code(filename):
-    with open(filename, encoding="utf-8") as file:
-        code = json.loads(file.read())
-
-    for instr in code:
-        instr['opcode'] = Opcode(instr['opcode'])
-        if 'term' in instr:
-            instr['term'] = Term(instr['term'][0], instr['term'][1], instr['term'][2])
-
-    return code
-
+# def read_code(filename):
+#     with open(filename, encoding="utf-8") as file:
+#         code = json.loads(file.read())
+#
+#     for instr in code:
+#         instr['opcode'] = Opcode(instr['opcode'])
+#         if 'term' in instr:
+#             instr['term'] = Term(instr['term'][0], instr['term'][1], instr['term'][2])
+#
+#     return code
