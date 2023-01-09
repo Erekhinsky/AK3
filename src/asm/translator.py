@@ -22,7 +22,6 @@ symbol2opcode = {
 
 register = {
     'AC': Register.AC,
-    'SR': Register.SR,
 }
 
 
@@ -42,8 +41,11 @@ def translate(text):
             words_counter = words_counter - 1
         elif len(labels) == 1:
             data[words[0]] = words_counter
-            if words[1][0] == '\'':
+            if words[1][0] == '\'' or words[1][0] == '\"':
                 words[1] = words[1][1:len(words[1]) - 1]
+                if words[1] == '':
+                    terms.append((Term(words_counter, 'data', " ")))
+                    continue
             terms.append(Term(words_counter, 'data', words[1]))
         else:
             terms.append(Term(words_counter, words[0], words[1:3]))
@@ -59,7 +61,7 @@ def translate(text):
                     terms[i] = Term(terms[i].line, terms[i].operation, data[terms[i].argument[0]])
                 elif terms[i].argument[0] in register.keys():  # REG
                     terms[i] = Term(terms[i].line, terms[i].operation, terms[i].argument[0])
-                else:  # ?
+                else:  # Err please
                     terms[i] = Term(terms[i].line, terms[i].operation, terms[i].argument[0])
 
         code.append({'opcode': symbol2opcode[terms[i].operation], 'term': terms[i]})
@@ -82,23 +84,3 @@ def read_code(filename):
             instr['term'] = Term(instr['term'][0], instr['term'][1], instr['term'][2])
 
     return code
-
-
-# def main(args):
-#     assert len(args) == 2, \
-#         "Wrong arguments: translator.py <input_file> <target_file>"
-#     source, target = args
-#
-#     source = "C:/Users/dron1/PycharmProjects/pythonProject/source.txt"
-#     target = "C:/Users/dron1/PycharmProjects/pythonProject/target.txt"
-#
-#     with open(source, "rt", encoding="utf-8") as f:
-#         source = f.read()
-#
-#     code = translate(source)
-#     print("source LoC:", len(source.split()), "code instr:", len(code))
-#     write_code(target, code)
-#
-#
-# if __name__ == '__main__':
-#     main(sys.argv[1:])

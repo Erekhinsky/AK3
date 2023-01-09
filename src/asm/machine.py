@@ -151,7 +151,7 @@ class ControlUnit:
                     self.tick()
                     self.data_path.acc = symbol
                     logging.debug('input: %s', repr(symbol))
-                    self.sr = 0
+                    self.latch_ip(True)
                     self.tick()
                     break
 
@@ -160,9 +160,9 @@ class ControlUnit:
                 self.latch_sr(opcode)
                 if self.sr == 2:
                     symbol = str(self.data_path.acc)
+                    print(symbol)
                     self.tick()
-                    # logging.debug('output: %s << %s', repr(
-                    #     ''.join(self.data_path.output_buffer)), repr(symbol))
+                    logging.debug('output: %s << %s', repr(''.join(self.data_path.output_buffer)), repr(symbol))
                     self.data_path.output_buffer.append(symbol)
                     self.latch_ip(True)
                     self.tick()
@@ -181,52 +181,21 @@ class ControlUnit:
         else:
             print("Operation decode Err: ", opcode)
 
+    @property
+    def __repr__(self):
+        state = "{{TICK: {}, IP: {}, ADDR: {}, DATA: {}, ACC: {}}}".format(
+            self._tick,
+            self.ip,
+            self.data_path.addr,
+            self.data_path.data_memory[self.data_path.addr],
+            self.data_path.acc,
+        )
 
-# def simulation(code, input_tokens, data_memory_size, limit):
-#     data_path = DataPath(data_memory_size, input_tokens)
-#     control_unit = ControlUnit(code, data_path)
-#     instr_counter = 0
-#
-#     logging.debug('%s', control_unit)
-#     try:
-#         while True:
-#             assert limit > instr_counter, "too long execution, increase limit!"
-#             control_unit.decode_and_execute_instruction()
-#             instr_counter += 1
-#             logging.debug('%s', control_unit)
-#     except EOFError:
-#         logging.warning('Input buffer is empty!')
-#     except StopIteration:
-#         pass
-#     # logging.info('output_buffer: %s', repr(''.join(data_path.output_buffer)))
-#     return ''.join(data_path.output_buffer), str(instr_counter), str(control_unit.current_tick())
+        instr = self.program[self.ip]
+        opcode = instr["opcode"]
+        if instr["term"].argument == []:
+            action = "{}".format(opcode)
+        else:
+            action = "{} {}".format(opcode, instr["term"].argument)
 
-
-# def latch_sr(control_unit, sel):
-#     control_unit.latch_sr(sel)
-
-# def main(args):
-#     assert len(args) == 2, "Wrong arguments: machine.py <code_file> <input_file>"
-#     code_file, input_file = args
-#
-#     code_file = "C:/Users/dron1/PycharmProjects/pythonProject/target.txt"
-#     input_file = "C:/Users/dron1/PycharmProjects/pythonProject/input.txt"
-#
-#     code = read_code(code_file)
-#
-#     with open(input_file, encoding="utf-8") as file:
-#         input_text = file.read()
-#         input_token = []
-#         for char in input_text:
-#             input_token.append(char)
-#
-#     output, instr_counter, ticks = simulation(code, input_tokens=input_token, data_memory_size=200, limit=30000)
-#
-#     print("Program Complete")
-#     print(''.join(output))
-#     print("instr_counter:", str(instr_counter), "ticks:", str(ticks))
-#
-#
-# if __name__ == '__main__':
-#     logging.getLogger().setLevel(logging.DEBUG)
-#     main(sys.argv[1:])
+        return "{} {}".format(state, action)

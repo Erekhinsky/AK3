@@ -4,7 +4,7 @@
         "term": [
             0,
             "data",
-            "\"H\""
+            "\\0"
         ]
     },
     {
@@ -12,197 +12,69 @@
         "term": [
             1,
             "data",
-            "\"e\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            2,
-            "data",
-            "\"l\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            3,
-            "data",
-            "\"l\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            4,
-            "data",
-            "\"o\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            5,
-            "data",
-            "\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            6,
-            "data",
-            "\"W\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            7,
-            "data",
-            "\"o\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            8,
-            "data",
-            "\"r\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            9,
-            "data",
-            "\"l\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            10,
-            "data",
-            "\"d\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            11,
-            "data",
-            "\"!\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            12,
-            "data",
-            "\"\\0\""
-        ]
-    },
-    {
-        "opcode": "data",
-        "term": [
-            13,
-            "data",
             "0"
         ]
     },
     {
-        "opcode": "data",
+        "opcode": "IN",
         "term": [
-            14,
-            "data",
-            "\"\\0\""
-        ]
-    },
-    {
-        "opcode": "LD_ADDR",
-        "term": [
-            15,
-            "LD_ADDR",
-            0
+            2,
+            "IN",
+            []
         ]
     },
     {
         "opcode": "ST",
         "term": [
-            16,
+            3,
             "ST",
-            13
-        ]
-    },
-    {
-        "opcode": "LD_VAL",
-        "term": [
-            17,
-            "LD_VAL",
-            "AC"
+            1
         ]
     },
     {
         "opcode": "CMP",
         "term": [
-            18,
+            4,
             "CMP",
-            14
+            0
         ]
     },
     {
         "opcode": "JE",
         "term": [
-            19,
+            5,
             "JE",
-            25
-        ]
-    },
-    {
-        "opcode": "OUT",
-        "term": [
-            20,
-            "OUT",
-            []
+            9
         ]
     },
     {
         "opcode": "LD_VAL",
         "term": [
-            21,
+            6,
             "LD_VAL",
-            13
+            1
         ]
     },
     {
-        "opcode": "INC",
+        "opcode": "OUT",
         "term": [
-            22,
-            "INC",
+            7,
+            "OUT",
             []
-        ]
-    },
-    {
-        "opcode": "ST",
-        "term": [
-            23,
-            "ST",
-            13
         ]
     },
     {
         "opcode": "JMP",
         "term": [
-            24,
+            8,
             "JMP",
-            17
+            2
         ]
     },
     {
         "opcode": "HLT",
         "term": [
-            25,
+            9,
             "HLT",
             []
         ]

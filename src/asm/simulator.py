@@ -1,3 +1,5 @@
+import logging
+
 from translator import *
 from machine import *
 
@@ -8,6 +10,7 @@ class Simulator:
         self.source_file = "C:/Users/dron1/PycharmProjects/pythonProject/source.txt"
         self.code_file = "C:/Users/dron1/PycharmProjects/pythonProject/target.txt"
         self.input_file = "C:/Users/dron1/PycharmProjects/pythonProject/input.txt"
+        self.debug_file = "C:/Users/dron1/PycharmProjects/pythonProject/debug.txt"
 
         self.data_memory_size = 200
         self.limit = 30000
@@ -38,7 +41,7 @@ class Simulator:
         self.data_path = DataPath(self.data_memory_size, input_token)
         self.control_unit = ControlUnit(code, self.data_path)
 
-        # logging.debug('%s', self.control_unit)
+        logging.debug('%s', self.control_unit)
         try:
             while True:
                 assert self.limit > self.instr_counter, "too long execution, increase limit!"
@@ -46,10 +49,10 @@ class Simulator:
                 self.instr_counter += 1
                 logging.debug('%s', self.control_unit)
         except EOFError:
-            logging.warning('Input buffer is empty!')
+            logging.debug('Input buffer is empty!')
         except StopIteration:
             pass
-        # logging.info('output_buffer: %s', repr(''.join(data_path.output_buffer)))
+        logging.info('output_buffer: %s', repr(''.join(self.data_path.output_buffer)))
         output, instr_counter, ticks = ''.join(self.data_path.output_buffer), str(self.instr_counter), str(
             self.control_unit.current_tick())
 
