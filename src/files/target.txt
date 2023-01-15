@@ -1,0 +1,226 @@
+[
+    {
+        "opcode": "data",
+        "term": [
+            0,
+            "data",
+            "H"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            1,
+            "data",
+            "e"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            2,
+            "data",
+            "l"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            3,
+            "data",
+            "l"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            4,
+            "data",
+            "o"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            5,
+            "data",
+            " "
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            6,
+            "data",
+            "W"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            7,
+            "data",
+            "o"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            8,
+            "data",
+            "r"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            9,
+            "data",
+            "l"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            10,
+            "data",
+            "d"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            11,
+            "data",
+            "!"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            12,
+            "data",
+            "\\0"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            13,
+            "data",
+            "0"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            14,
+            "data",
+            "\\0"
+        ]
+    },
+    {
+        "opcode": "LD_ADDR",
+        "term": [
+            15,
+            "LD_ADDR",
+            0
+        ]
+    },
+    {
+        "opcode": "ST",
+        "term": [
+            16,
+            "ST",
+            13
+        ]
+    },
+    {
+        "opcode": "LD_VAL",
+        "term": [
+            17,
+            "LD_VAL",
+            "AC"
+        ]
+    },
+    {
+        "opcode": "CMP",
+        "term": [
+            18,
+            "CMP",
+            14
+        ]
+    },
+    {
+        "opcode": "JE",
+        "term": [
+            19,
+            "JE",
+            27
+        ]
+    },
+    {
+        "opcode": "LD_VAL",
+        "term": [
+            20,
+            "LD_VAL",
+            13
+        ]
+    },
+    {
+        "opcode": "LD_VAL",
+        "term": [
+            21,
+            "LD_VAL",
+            "AC"
+        ]
+    },
+    {
+        "opcode": "OUT",
+        "term": [
+            22,
+            "OUT",
+            []
+        ]
+    },
+    {
+        "opcode": "LD_VAL",
+        "term": [
+            23,
+            "LD_VAL",
+            13
+        ]
+    },
+    {
+        "opcode": "INC",
+        "term": [
+            24,
+            "INC",
+            []
+        ]
+    },
+    {
+        "opcode": "ST",
+        "term": [
+            25,
+            "ST",
+            13
+        ]
+    },
+    {
+        "opcode": "JMP",
+        "term": [
+            26,
+            "JMP",
+            17
+        ]
+    },
+    {
+        "opcode": "HLT",
+        "term": [
+            27,
+            "HLT",
+            []
+        ]
+    }
+]

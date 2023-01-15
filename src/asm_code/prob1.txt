@@ -1,0 +1,31 @@
+:data:
+SUM 0
+THREE 3
+FIVE 5
+CUR 0
+NULL 0
+END 1000
+:start:
+LD_VAL CUR
+INC
+ST CUR
+CMP END
+JE :exit:
+LD_VAL CUR
+MOD THREE
+CMP NULL
+JE :summ:
+LD_VAL CUR
+MOD FIVE
+CMP NULL
+JE :summ:
+JMP :start:
+:summ:
+LD_VAL SUM
+ADD CUR
+ST SUM
+JMP :start:
+:exit:
+LD_VAL SUM
+OUT
+HLT

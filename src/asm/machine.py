@@ -5,6 +5,7 @@
 
 import logging
 import re
+import sys
 
 from isa import Opcode
 
@@ -16,7 +17,7 @@ def is_int(s):
 class DataPath:
 
     def __init__(self, data_memory_size, input_buffer):
-        # assert data_memory_size > 0, "Data_memory size should be non-zero"
+        assert data_memory_size > 0, "Data_memory size should be non-zero"
         self.data_memory_size = data_memory_size
         self.data_memory = [0] * data_memory_size
 
@@ -38,7 +39,8 @@ class DataPath:
         elif sel == Opcode.ADD:
             self.acc = self.acc + self.data_memory[self.addr]
         else:
-            print("ALU Err")
+            print("Invalid ALU command")
+            sys.exit()
 
     def latch_acc(self, sel):
         if sel == Opcode.INC:
@@ -52,7 +54,8 @@ class DataPath:
         elif sel == Opcode.LD_ADDR:
             self.acc = self.addr
         else:
-            print("Latch ACC Err")
+            print("Invalid Latch ACC command")
+            sys.exit()
 
     def latch_addr(self, sel):
         if sel == self.acc:
@@ -93,7 +96,6 @@ class ControlUnit:
     def decode_and_execute_instruction(self):
 
         instr = self.program[self.ip]
-        print(instr)
         opcode = instr["opcode"]
 
         if opcode is Opcode.HLT:
@@ -160,7 +162,6 @@ class ControlUnit:
                 self.latch_sr(opcode)
                 if self.sr == 2:
                     symbol = str(self.data_path.acc)
-                    print(symbol)
                     self.tick()
                     logging.debug('output: %s << %s', repr(''.join(self.data_path.output_buffer)), repr(symbol))
                     self.data_path.output_buffer.append(symbol)
@@ -180,8 +181,8 @@ class ControlUnit:
 
         else:
             print("Operation decode Err: ", opcode)
+            sys.exit()
 
-    @property
     def __repr__(self):
         state = "{{TICK: {}, IP: {}, ADDR: {}, DATA: {}, ACC: {}}}".format(
             self._tick,
