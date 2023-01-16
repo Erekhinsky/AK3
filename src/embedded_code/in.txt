@@ -1,0 +1,9 @@
+:data:
+READY 1
+:start:
+LD_VAL READY
+CMP SR
+JE :in:
+JMP :start:
+:in:
+IN

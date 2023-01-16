@@ -1,0 +1,12 @@
+:data:
+ACC 0
+READY 2
+:start:
+ST ACC
+:loop:
+LD_VAL READY
+CMP SR
+JE :out:
+JMP :loop:
+:out:
+OUT

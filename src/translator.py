@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+# pylint: disable=missing-function-docstring  # чтобы не быть Капитаном Очевидностью
+# pylint: disable=invalid-name                # сохраним традиционные наименования сигналов
+# pylint: disable=consider-using-f-string     # избыточный синтаксис
+
 import json
 import sys
 
@@ -24,6 +29,7 @@ symbol2opcode = {
 
 register = {
     'AC': Register.AC,
+    'SR': Register.SR,
 }
 
 
@@ -49,7 +55,7 @@ def translate(text):
             data[words[0]] = words_counter
             if words[1][0] == '\'' or words[1][0] == '\"':  # Char
                 words[1] = words[1][1:len(words[1]) - 1]
-                if words[1] == '':                          # Space
+                if words[1] == '':  # Space
                     terms.append((Term(words_counter, 'data', " ")))
                     continue
             terms.append(Term(words_counter, 'data', words[1]))
@@ -69,6 +75,8 @@ def translate(text):
                 elif terms[i].argument[0] in data.keys():  # Data
                     terms[i] = Term(terms[i].line, terms[i].operation, data[terms[i].argument[0]])
                 elif terms[i].argument[0] in register.keys():  # Register
+                    terms[i] = Term(terms[i].line, terms[i].operation, terms[i].argument[0])
+                elif terms[i].operation == Opcode.OUT or terms[i].operation == Opcode.IN:
                     terms[i] = Term(terms[i].line, terms[i].operation, terms[i].argument[0])
                 else:
                     print("Invalid arguments:", terms[i])

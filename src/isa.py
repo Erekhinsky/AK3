@@ -22,6 +22,7 @@ class Opcode(str, Enum):
 
 class Register(str, Enum):
     AC = 'AC'
+    SR = 'SR'
 
 
 class Term(namedtuple('Term', 'line operation argument')):

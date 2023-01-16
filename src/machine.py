@@ -5,7 +5,6 @@
 
 import logging
 import re
-import sys
 
 from isa import Opcode
 
@@ -16,15 +15,21 @@ def is_int(s):
 
 class DataPath:
 
-    def __init__(self, data_memory_size, input_buffer):
-        assert data_memory_size > 0, "Data_memory size should be non-zero"
+    def __init__(self, data_memory_size, input_buffer, embedded_code):
+        assert data_memory_size > len(embedded_code), "Data_memory_size should be > " + str(len(embedded_code))
+
         self.data_memory_size = data_memory_size
-        self.data_memory = [0] * data_memory_size
+        self.data_memory = embedded_code
+        self.size_embedded_code = len(embedded_code)
+        for i in range(self.size_embedded_code, self.data_memory_size):
+            self.data_memory.append(0)
 
         self.acc = 0
         self.addr = 0
         self.input_buffer = input_buffer
         self.output_buffer = []
+
+        self.vector = {1: None, 2: None}
 
     def alu(self, sel):
         if sel == Opcode.MOD:
@@ -39,8 +44,7 @@ class DataPath:
         elif sel == Opcode.ADD:
             self.acc = self.acc + self.data_memory[self.addr]
         else:
-            print("Invalid ALU command")
-            sys.exit()
+            raise AttributeError
 
     def latch_acc(self, sel):
         if sel == Opcode.INC:
@@ -54,8 +58,7 @@ class DataPath:
         elif sel == Opcode.LD_ADDR:
             self.acc = self.addr
         else:
-            print("Invalid Latch ACC command")
-            sys.exit()
+            raise AttributeError
 
     def latch_addr(self, sel):
         if sel == self.acc:
@@ -63,13 +66,21 @@ class DataPath:
         else:
             self.addr = sel
 
+    def load_program(self, program):
+        for i in range(self.size_embedded_code, len(program)):
+            j = 0
+            self.data_memory[i] = program[j]
+            j += 1
+        print(self.data_memory)
+        return self.size_embedded_code
+
 
 class ControlUnit:
 
     def __init__(self, program, data_path):
-        self.ip = 0
-        self.sr = 0
+        self.interrupt = 0
         self.data_path = data_path
+        self.ip = self.data_path.load_program(program)
         self.program = program
         self._tick = 0
 
@@ -85,17 +96,10 @@ class ControlUnit:
         else:
             self.ip = self.program[self.ip]["term"].argument
 
-    def latch_sr(self, sel):
-        if sel == Opcode.OUT:
-            sr = int(input("Ожидается вывод, вы готовы? (2 - если да)\n"))
-            self.sr = sr
-        elif sel == Opcode.IN:
-            sr = int(input("Ожидается ввод, вы готовы? (1 - если да)\n"))
-            self.sr = sr
-
     def decode_and_execute_instruction(self):
 
-        instr = self.program[self.ip]
+        instr = self.data_path.data_memory[self.ip]
+        print(self.data_path.data_memory[self.ip])
         opcode = instr["opcode"]
 
         if opcode is Opcode.HLT:
@@ -144,30 +148,43 @@ class ControlUnit:
             self.tick()
 
         elif opcode is Opcode.IN:
-            while True:
-                self.latch_sr(opcode)
-                if self.sr == 1:
-                    if len(self.data_path.input_buffer) == 0:
-                        raise EOFError()
-                    symbol = self.data_path.input_buffer.pop(0)
+            if instr["term"].argument:
+                self.interrupt = instr["term"].argument
+                self.tick()
+                self.data_path.vector[self.interrupt] = [self.data_path.addr, self.ip]
+                self.ip = self.data_path.data_memory[self.interrupt]
+                self.tick()
+            else:
+                if len(self.data_path.input_buffer) == 0:
+                    raise EOFError()
+                symbol = self.data_path.input_buffer.pop(0)
+                self.data_path.acc = symbol
+                logging.debug('input: %s', repr(symbol))
+                self.latch_ip(True)
+                self.tick()
+                if self.interrupt:
+                    self.data_path.addr, self.ip = self.data_path.vector[self.interrupt]
                     self.tick()
-                    self.data_path.acc = symbol
-                    logging.debug('input: %s', repr(symbol))
-                    self.latch_ip(True)
-                    self.tick()
-                    break
+                    self.interrupt = 0
 
         elif opcode is Opcode.OUT:
-            while True:
-                self.latch_sr(opcode)
-                if self.sr == 2:
-                    symbol = str(self.data_path.acc)
+            if instr["term"].argument:
+                self.interrupt = int(instr["term"].argument)
+                self.tick()
+                self.data_path.vector[self.interrupt] = [self.data_path.addr, self.data_path.acc, self.ip]
+                self.ip = self.data_path.data_memory[self.interrupt]
+                self.tick()
+            else:
+                symbol = str(self.data_path.acc)
+                self.tick()
+                logging.debug('output: %s << %s', repr(''.join(self.data_path.output_buffer)), repr(symbol))
+                self.data_path.output_buffer.append(symbol)
+                self.latch_ip(True)
+                self.tick()
+                if self.interrupt:
+                    self.data_path.addr, self.data_path.acc, self.ip = self.data_path.vector[self.interrupt]
                     self.tick()
-                    logging.debug('output: %s << %s', repr(''.join(self.data_path.output_buffer)), repr(symbol))
-                    self.data_path.output_buffer.append(symbol)
-                    self.latch_ip(True)
-                    self.tick()
-                    break
+                    self.interrupt = 0
 
         elif opcode is Opcode.DATA:
             self.data_path.addr = self.ip
@@ -180,8 +197,7 @@ class ControlUnit:
             self.tick()
 
         else:
-            print("Operation decode Err: ", opcode)
-            sys.exit()
+            raise AttributeError
 
     def __repr__(self):
         state = "{{TICK: {}, IP: {}, ADDR: {}, DATA: {}, ACC: {}}}".format(
