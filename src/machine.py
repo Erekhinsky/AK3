@@ -71,7 +71,6 @@ class DataPath:
             j = 0
             self.data_memory[i] = program[j]
             j += 1
-        print(self.data_memory)
         return self.size_embedded_code
 
 
@@ -99,7 +98,6 @@ class ControlUnit:
     def decode_and_execute_instruction(self):
 
         instr = self.data_path.data_memory[self.ip]
-        print(self.data_path.data_memory[self.ip])
         opcode = instr["opcode"]
 
         if opcode is Opcode.HLT:

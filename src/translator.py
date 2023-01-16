@@ -45,10 +45,11 @@ def translate(text):
         words_counter = words_counter + 1
 
         if not words:
-            print("Empty line:", words_counter)
-            sys.exit()
+            raise EOFError
 
         if len(words) == 1 and words[0][0] == ':' and words[0][len(words) - 1] == ':':
+            if words[0] == ":start:":
+                code.append(words_counter)
             labels[words[0]] = words_counter
             words_counter = words_counter - 1
         elif len(labels) == 1 and ':data:' in labels.keys():
@@ -62,8 +63,7 @@ def translate(text):
         elif words[0] in symbol2opcode.keys():
             terms.append(Term(words_counter, words[0], words[1:3]))
         else:
-            print("Invalid comm: " + words[0])
-            sys.exit()
+            raise AttributeError
 
     for i in range(len(terms)):
         if terms[i].operation != 'data':
@@ -82,8 +82,7 @@ def translate(text):
                     print("Invalid arguments:", terms[i])
                     sys.exit()
             else:
-                print("Invalid arguments:", terms[i])
-                sys.exit()
+                raise AttributeError
 
         code.append({'opcode': symbol2opcode[terms[i].operation], 'term': terms[i]})
 
