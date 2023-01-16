@@ -19,6 +19,7 @@ class Simulator:
 
         self.data_memory_size = 200
         self.limit = 30000
+        self.offset = 0
 
         self.data_path = DataPath
         self.control_unit = ControlUnit
@@ -58,6 +59,8 @@ class Simulator:
         except EOFError:
             logging.debug('Empty Line')
 
+        self.offset = len(embedded_code)
+
         return embedded_code
 
     def start_processor(self):
@@ -65,6 +68,8 @@ class Simulator:
         open(self.debug_file, 'w').close()
 
         code = read_code(self.code_file)
+
+        start = self.find_start(code)
 
         with open(self.input_file, encoding="utf-8") as file:
             input_text = file.read()
@@ -74,7 +79,7 @@ class Simulator:
 
         embedded_code = self.translate_embedded_code()
         self.data_path = DataPath(self.data_memory_size, input_token, embedded_code + code)
-        self.control_unit = ControlUnit(len(embedded_code), self.data_path)
+        self.control_unit = ControlUnit(start, self.offset, self.data_path)
 
         logging.debug("%s", self.control_unit)
         try:
@@ -96,6 +101,12 @@ class Simulator:
         print("Program Complete")
         print(''.join(output))
         print("instr_counter:", str(instr_counter), "ticks:", str(ticks))
+
+    @staticmethod
+    def find_start(code):
+        for i in range(len(code)):
+            if code[i]["term"].operation != "data":
+                return i
 
 
 def main(args):

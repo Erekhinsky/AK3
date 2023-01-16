@@ -8,7 +8,6 @@ import sys
 
 from isa import Opcode, Term, Register
 
-# словарь символов, непосредственно транслируемых в машинный код
 symbol2opcode = {
     'CMP': Opcode.CMP,
     'JE': Opcode.JE,
@@ -48,8 +47,6 @@ def translate(text):
             raise EOFError
 
         if len(words) == 1 and words[0][0] == ':' and words[0][len(words) - 1] == ':':
-            if words[0] == ":start:":
-                code.append(words_counter)
             labels[words[0]] = words_counter
             words_counter = words_counter - 1
         elif len(labels) == 1 and ':data:' in labels.keys():

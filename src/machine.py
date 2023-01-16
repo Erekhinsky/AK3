@@ -76,11 +76,11 @@ class DataPath:
 
 class ControlUnit:
 
-    def __init__(self, program, data_path):
+    def __init__(self, start, offset, data_path):
         self.interrupt = 0
         self.data_path = data_path
-        self.ip = self.data_path.load_program(program)
-        self.program = program
+        self.ip = start + offset
+        self.offset = offset
         self._tick = 0
 
     def tick(self):
@@ -93,12 +93,13 @@ class ControlUnit:
         if sel:
             self.ip += 1
         else:
-            self.ip = self.program[self.ip]["term"].argument
+            self.ip = self.data_path.data_memory[self.ip]["term"].argument
 
     def decode_and_execute_instruction(self):
 
         instr = self.data_path.data_memory[self.ip]
         opcode = instr["opcode"]
+        instr["term"].argument += self.offset
 
         if opcode is Opcode.HLT:
             raise StopIteration()
@@ -206,7 +207,7 @@ class ControlUnit:
             self.data_path.acc,
         )
 
-        instr = self.program[self.ip]
+        instr = self.data_path.data_memory[self.ip]
         opcode = instr["opcode"]
         if instr["term"].argument == []:
             action = "{}".format(opcode)
