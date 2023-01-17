@@ -2,12 +2,12 @@
 END "\0"
 BUF 0
 :start:
-IN
+IN 0
 ST BUF
 CMP END
 JE :exit:
 LD_VAL BUF
-OUT
+OUT 1
 JMP :start:
 :exit:
 HLT

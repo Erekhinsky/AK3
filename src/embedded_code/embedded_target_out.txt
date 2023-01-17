@@ -1,0 +1,66 @@
+[
+    {
+        "opcode": "data",
+        "term": [
+            0,
+            "data",
+            "0"
+        ]
+    },
+    {
+        "opcode": "data",
+        "term": [
+            1,
+            "data",
+            "2"
+        ]
+    },
+    {
+        "opcode": "ST",
+        "term": [
+            2,
+            "ST",
+            0
+        ]
+    },
+    {
+        "opcode": "LD_VAL",
+        "term": [
+            3,
+            "LD_VAL",
+            1
+        ]
+    },
+    {
+        "opcode": "CMP",
+        "term": [
+            4,
+            "CMP",
+            "SR"
+        ]
+    },
+    {
+        "opcode": "JE",
+        "term": [
+            5,
+            "JE",
+            7
+        ]
+    },
+    {
+        "opcode": "JMP",
+        "term": [
+            6,
+            "JMP",
+            3
+        ]
+    },
+    {
+        "opcode": "OUT",
+        "term": [
+            7,
+            "OUT",
+            []
+        ]
+    }
+]

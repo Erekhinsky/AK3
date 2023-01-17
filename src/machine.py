@@ -15,13 +15,12 @@ def is_int(s):
 
 class DataPath:
 
-    def __init__(self, data_memory_size, input_buffer, embedded_code):
-        assert data_memory_size > len(embedded_code), "Data_memory_size should be > " + str(len(embedded_code))
+    def __init__(self, data_memory_size, input_buffer, vector, embedded_code):
+        assert data_memory_size > len(embedded_code), "Data_memory_size should be > " + str(len(embedded_code) + len(vector))
 
         self.data_memory_size = data_memory_size
-        self.data_memory = embedded_code
-        self.size_embedded_code = len(embedded_code)
-        for i in range(self.size_embedded_code, self.data_memory_size):
+        self.data_memory = vector + embedded_code
+        for i in range(len(embedded_code) + len(vector), self.data_memory_size):
             self.data_memory.append(0)
 
         self.acc = 0
@@ -66,21 +65,13 @@ class DataPath:
         else:
             self.addr = sel
 
-    def load_program(self, program):
-        for i in range(self.size_embedded_code, len(program)):
-            j = 0
-            self.data_memory[i] = program[j]
-            j += 1
-        return self.size_embedded_code
-
 
 class ControlUnit:
 
-    def __init__(self, start, offset, data_path):
+    def __init__(self, start, data_path):
         self.interrupt = 0
         self.data_path = data_path
-        self.ip = start + offset
-        self.offset = offset
+        self.ip = start
         self._tick = 0
 
     def tick(self):
@@ -97,9 +88,12 @@ class ControlUnit:
 
     def decode_and_execute_instruction(self):
 
+        print(self.ip)
+
         instr = self.data_path.data_memory[self.ip]
         opcode = instr["opcode"]
-        instr["term"].argument += self.offset
+
+        print(instr)
 
         if opcode is Opcode.HLT:
             raise StopIteration()
@@ -115,7 +109,21 @@ class ControlUnit:
                 self.latch_ip(True)
             self.tick()
 
-        elif opcode in {Opcode.CMP, Opcode.LD_ADDR, Opcode.ADD, Opcode.SUB, Opcode.MOD}:
+        elif opcode in {Opcode.LD_ADDR, Opcode.ADD, Opcode.SUB, Opcode.MOD}:
+            self.data_path.addr = instr["term"].argument
+            self.tick()
+            self.data_path.latch_acc(opcode)
+            self.latch_ip(True)
+            self.tick()
+
+        elif opcode is Opcode.CMP:
+            if instr["term"].argument == "SR":
+                # So? You should create a new project, were you will create a new file with name - SR.
+                # In original project you will take SR value
+                self.data_path.addr = self.data_path.acc
+            else:
+                self.data_path.addr = instr["term"].argument
+
             self.data_path.addr = instr["term"].argument
             self.tick()
             self.data_path.latch_acc(opcode)

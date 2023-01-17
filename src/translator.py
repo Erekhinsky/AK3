@@ -4,6 +4,7 @@
 # pylint: disable=consider-using-f-string     # избыточный синтаксис
 
 import json
+import re
 import sys
 
 from isa import Opcode, Term, Register
@@ -30,6 +31,10 @@ register = {
     'AC': Register.AC,
     'SR': Register.SR,
 }
+
+
+def is_int(s):
+    return re.match(r"[-+]?\d+(\.0*)?$", s) is not None
 
 
 def translate(text):
@@ -91,13 +96,28 @@ def write_code(filename, code):
         file.write(json.dumps(code, indent=4))
 
 
-def read_code(filename):
+def read_code(filename, offset):
+    start = offset
+
     with open(filename, encoding="utf-8") as file:
         code = json.loads(file.read())
 
     for instr in code:
+
+        instr['term'][0] += offset
+
+        if instr['term'][1] == "data":
+            start = start + 1
+        elif is_int(str(instr['term'][2])) and instr['term'][1] != Opcode.OUT and instr['term'][1] != Opcode.IN:
+            instr['term'][2] = int(instr['term'][2])
+            instr['term'][2] += offset
+
+        print(instr['term'][0], instr['term'][1], instr['term'][2])
+
         instr['opcode'] = Opcode(instr['opcode'])
         if 'term' in instr:
             instr['term'] = Term(instr['term'][0], instr['term'][1], instr['term'][2])
 
-    return code
+    offset += len(code)
+
+    return code, start, offset

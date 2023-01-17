@@ -12,6 +12,8 @@ class Simulator:
         # self.source_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/asm_code/prob1.txt"
         self.in_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/in.txt"
         self.out_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/out.txt"
+        self.embedded_file_in = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/embedded_target_in.txt"
+        self.embedded_file_out = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/embedded_target_out.txt"
         self.source_file = source_file
         self.code_file = code_file
         self.input_file = input_file
@@ -19,7 +21,7 @@ class Simulator:
 
         self.data_memory_size = 200
         self.limit = 30000
-        self.offset = 0
+        self.offset = 2
 
         self.data_path = DataPath
         self.control_unit = ControlUnit
@@ -27,6 +29,7 @@ class Simulator:
         self.instr_counter = 0
 
     def start_translator(self):
+
         with open(self.source_file, "rt", encoding="utf-8") as f:
             source = f.read()
         try:
@@ -38,38 +41,38 @@ class Simulator:
         except EOFError:
             logging.debug('Empty Line')
 
-    def translate_embedded_code(self):
-        embedded_code = [3, 10]
+    def translate_embedded_code_in(self):
 
         with open(self.in_file, "rt", encoding="utf-8") as f:
             source = f.read()
         try:
-            embedded_code += translate(source)[1:]
+            embedded_code = translate(source)
+            write_code(self.embedded_file_in, embedded_code)
         except AttributeError:
             logging.debug('Unknown command')
         except EOFError:
             logging.debug('Empty Line')
+
+    def translate_embedded_code_out(self):
 
         with open(self.out_file, "rt", encoding="utf-8") as f:
             source = f.read()
         try:
-            embedded_code += translate(source)[1:]
+            embedded_code = translate(source)
+            write_code(self.embedded_file_out, embedded_code)
         except AttributeError:
             logging.debug('Unknown command')
         except EOFError:
             logging.debug('Empty Line')
-
-        self.offset = len(embedded_code)
-
-        return embedded_code
 
     def start_processor(self):
 
         open(self.debug_file, 'w').close()
 
-        code = read_code(self.code_file)
+        embedded_code_in, start_in, self.offset = read_code(self.embedded_file_in, self.offset)
+        embedded_code_out, start_out, self.offset = read_code(self.embedded_file_out, self.offset)
 
-        start = self.find_start(code)
+        code, start_code, self.offset = read_code(self.code_file, self.offset)
 
         with open(self.input_file, encoding="utf-8") as file:
             input_text = file.read()
@@ -77,9 +80,8 @@ class Simulator:
             for char in input_text:
                 input_token.append(char)
 
-        embedded_code = self.translate_embedded_code()
-        self.data_path = DataPath(self.data_memory_size, input_token, embedded_code + code)
-        self.control_unit = ControlUnit(start, self.offset, self.data_path)
+        self.data_path = DataPath(self.data_memory_size, input_token,[start_in, start_out], embedded_code_in + embedded_code_out + code)
+        self.control_unit = ControlUnit(start_code, self.data_path)
 
         logging.debug("%s", self.control_unit)
         try:
@@ -98,7 +100,6 @@ class Simulator:
         output, instr_counter, ticks = ''.join(self.data_path.output_buffer), str(self.instr_counter), str(
             self.control_unit.current_tick())
 
-        print("Program Complete")
         print(''.join(output))
         print("instr_counter:", str(instr_counter), "ticks:", str(ticks))
 
@@ -111,12 +112,17 @@ class Simulator:
 
 def main(args):
     source_file, code_file, input_file, debug_file = args
+
     simulator = Simulator(source_file, code_file, input_file, debug_file)
-    Simulator.start_translator(simulator)
+
+    simulator.translate_embedded_code_in()
+    simulator.translate_embedded_code_out()
+    simulator.start_translator()
     simulator.start_processor()
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename="C:/Users/dron1/PycharmProjects/pythonProject/src/files/debug.txt", level=logging.DEBUG)
+    logging.basicConfig(filename="C:/Users/dron1/PycharmProjects/pythonProject/src/files/debug.txt",
+                        level=logging.DEBUG)
     # logging.getLogger().setLevel(logging.DEBUG)
     main(sys.argv[1:])

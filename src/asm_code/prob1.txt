@@ -27,5 +27,5 @@ ST SUM
 JMP :start:
 :exit:
 LD_VAL SUM
-OUT
+OUT 1
 HLT
