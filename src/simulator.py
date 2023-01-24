@@ -7,20 +7,21 @@ from src.translator import translate, write_code, read_code
 
 class Simulator:
 
-    def __init__(self, source_file, code_file, input_file, debug_file):
-        # self.source_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/asm_code/cat.txt"
-        # self.source_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/asm_code/prob1.txt"
+    def __init__(self, source_file, code_file, input_file):
+
         self.in_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/in.txt"
         self.out_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/out.txt"
         self.embedded_file_in = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/embedded_target_in.txt"
         self.embedded_file_out = "C:/Users/dron1/PycharmProjects/pythonProject/src/embedded_code/embedded_target_out.txt"
+        self.device_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/files/device.txt"
+        self.debug_file = "C:/Users/dron1/PycharmProjects/pythonProject/src/files/debug.txt"
+
         self.source_file = source_file
         self.code_file = code_file
         self.input_file = input_file
-        self.debug_file = debug_file
 
-        self.data_memory_size = 200
-        self.limit = 30000
+        self.data_memory_size = 300
+        self.limit = 3000000
         self.offset = 2
 
         self.data_path = DataPath
@@ -80,8 +81,8 @@ class Simulator:
             for char in input_text:
                 input_token.append(char)
 
-        self.data_path = DataPath(self.data_memory_size, input_token,[start_in, start_out], embedded_code_in + embedded_code_out + code)
-        self.control_unit = ControlUnit(start_code, self.data_path)
+        self.data_path = DataPath(self.data_memory_size, input_token, [start_in, start_out], embedded_code_in + embedded_code_out + code)
+        self.control_unit = ControlUnit(start_code, self.data_path, self.device_file)
 
         logging.debug("%s", self.control_unit)
         try:
@@ -103,17 +104,11 @@ class Simulator:
         print(''.join(output))
         print("instr_counter:", str(instr_counter), "ticks:", str(ticks))
 
-    @staticmethod
-    def find_start(code):
-        for i in range(len(code)):
-            if code[i]["term"].operation != "data":
-                return i
-
 
 def main(args):
-    source_file, code_file, input_file, debug_file = args
+    source_file, code_file, input_file = args
 
-    simulator = Simulator(source_file, code_file, input_file, debug_file)
+    simulator = Simulator(source_file, code_file, input_file)
 
     simulator.translate_embedded_code_in()
     simulator.translate_embedded_code_out()
@@ -124,5 +119,4 @@ def main(args):
 if __name__ == '__main__':
     logging.basicConfig(filename="C:/Users/dron1/PycharmProjects/pythonProject/src/files/debug.txt",
                         level=logging.DEBUG)
-    # logging.getLogger().setLevel(logging.DEBUG)
     main(sys.argv[1:])

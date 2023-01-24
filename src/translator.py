@@ -59,34 +59,34 @@ def translate(text):
             if words[1][0] == '\'' or words[1][0] == '\"':  # Char
                 words[1] = words[1][1:len(words[1]) - 1]
                 if words[1] == '':  # Space
-                    terms.append((Term(words_counter, 'data', " ")))
+                    terms.append((Term('data', " ")))
                     continue
-            terms.append(Term(words_counter, 'data', words[1]))
+            terms.append(Term('data', words[1]))
         elif words[0] in symbol2opcode.keys():
-            terms.append(Term(words_counter, words[0], words[1:3]))
+            terms.append(Term(words[0], words[1:3]))
         else:
             raise AttributeError
 
     for i in range(len(terms)):
         if terms[i].operation != 'data':
             if len(terms[i].argument) == 0:
-                terms[i] = Term(terms[i].line, terms[i].operation, terms[i].argument)
+                terms[i] = Term(terms[i].operation, terms[i].argument)
             elif len(terms[i].argument) == 1:
                 if terms[i].argument[0] in labels.keys():  # Label
-                    terms[i] = Term(terms[i].line, terms[i].operation, labels[terms[i].argument[0]])
+                    terms[i] = Term(terms[i].operation, labels[terms[i].argument[0]])
                 elif terms[i].argument[0] in data.keys():  # Data
-                    terms[i] = Term(terms[i].line, terms[i].operation, data[terms[i].argument[0]])
+                    terms[i] = Term(terms[i].operation, data[terms[i].argument[0]])
                 elif terms[i].argument[0] in register.keys():  # Register
-                    terms[i] = Term(terms[i].line, terms[i].operation, terms[i].argument[0])
+                    terms[i] = Term(terms[i].operation, terms[i].argument[0])
                 elif terms[i].operation == Opcode.OUT or terms[i].operation == Opcode.IN:
-                    terms[i] = Term(terms[i].line, terms[i].operation, terms[i].argument[0])
+                    terms[i] = Term(terms[i].operation, terms[i].argument[0])
                 else:
                     print("Invalid arguments:", terms[i])
                     sys.exit()
             else:
                 raise AttributeError
 
-        code.append({'opcode': symbol2opcode[terms[i].operation], 'term': terms[i]})
+        code.append({'term': terms[i]})
 
     return code
 
@@ -104,19 +104,22 @@ def read_code(filename, offset):
 
     for instr in code:
 
-        instr['term'][0] += offset
+        if instr['term'][0] == Opcode.DATA:
+            if is_int(instr['term'][1]):
+                instr['term'][1] = int(instr['term'][1])
+            start += 1
 
-        if instr['term'][1] == "data":
-            start = start + 1
-        elif is_int(str(instr['term'][2])) and instr['term'][1] != Opcode.OUT and instr['term'][1] != Opcode.IN:
-            instr['term'][2] = int(instr['term'][2])
-            instr['term'][2] += offset
+        elif instr['term'][0] == Opcode.OUT or instr['term'][0] == Opcode.IN:
+            if instr['term'][1]:
+                instr['term'][1] = int(instr['term'][1])
 
-        print(instr['term'][0], instr['term'][1], instr['term'][2])
+        elif is_int(str(instr['term'][1])):
+            instr['term'][1] = int(instr['term'][1])
+            instr['term'][1] += offset
 
-        instr['opcode'] = Opcode(instr['opcode'])
-        if 'term' in instr:
-            instr['term'] = Term(instr['term'][0], instr['term'][1], instr['term'][2])
+        instr['term'][0] = Opcode(instr['term'][0])
+
+        print(instr)    ###############################################
 
     offset += len(code)
 

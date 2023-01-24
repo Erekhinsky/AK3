@@ -25,5 +25,5 @@ class Register(str, Enum):
     SR = 'SR'
 
 
-class Term(namedtuple('Term', 'line operation argument')):
+class Term(namedtuple('Term', 'operation argument')):
     """Полное описание инструкции."""

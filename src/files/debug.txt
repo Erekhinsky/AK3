@@ -1,11 +1,4 @@
-DEBUG:root:{TICK: 0, IP: 31, ADDR: 0, DATA: 3, ACC: 0} LD_ADDR 16
-DEBUG:root:{TICK: 2, IP: 32, ADDR: 16, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}, ACC: 16} ST 29
-DEBUG:root:{TICK: 4, IP: 33, ADDR: 29, DATA: 16, ACC: 16} LD_VAL AC
-DEBUG:root:{TICK: 6, IP: 34, ADDR: 16, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}, ACC: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}} CMP 30
-DEBUG:root:{TICK: 8, IP: 35, ADDR: 30, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=30, operation='data', argument='\\0')}, ACC: 1} JE 43
-DEBUG:root:{TICK: 9, IP: 36, ADDR: 30, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=30, operation='data', argument='\\0')}, ACC: 1} LD_VAL 29
-DEBUG:root:{TICK: 11, IP: 37, ADDR: 29, DATA: 16, ACC: 16} LD_VAL AC
-DEBUG:root:{TICK: 13, IP: 38, ADDR: 16, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}, ACC: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}} OUT 1
-DEBUG:root:{TICK: 15, IP: 10, ADDR: 16, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}, ACC: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}} ST 8
-DEBUG:root:{TICK: 17, IP: 11, ADDR: 8, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}, ACC: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=16, operation='data', argument='H')}} LD_VAL 9
-DEBUG:root:{TICK: 19, IP: 12, ADDR: 9, DATA: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=9, operation='data', argument='2')}, ACC: {'opcode': <Opcode.DATA: 'data'>, 'term': Term(line=9, operation='data', argument='2')}} CMP SR
+DEBUG:root:{TICK: 0, IP: 23, ADDR: 0, DATA: 3, ACC: 0, SR: 0} LD_VAL 20
+DEBUG:root:{TICK: 2, IP: 24, ADDR: 20, DATA: {'term': [<Opcode.DATA: 'data'>, 0]}, ACC: {'term': [<Opcode.DATA: 'data'>, 0]}, SR: 0} INC
+DEBUG:root:{TICK: 3, IP: 25, ADDR: 20, DATA: {'term': [<Opcode.DATA: 'data'>, 0]}, ACC: 1, SR: 0} ST 20
+DEBUG:root:{TICK: 5, IP: 26, ADDR: 20, DATA: 1, ACC: 1, SR: 0} CMP 22

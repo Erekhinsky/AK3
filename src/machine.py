@@ -13,6 +13,10 @@ def is_int(s):
     return re.match(r"[-+]?\d+(\.0*)?$", s) is not None
 
 
+def to_term(arg):
+    return {'term': ['data', arg]}
+
+
 class DataPath:
 
     def __init__(self, data_memory_size, input_buffer, vector, embedded_code):
@@ -25,6 +29,8 @@ class DataPath:
 
         self.acc = 0
         self.addr = 0
+        self.sr = 0
+
         self.input_buffer = input_buffer
         self.output_buffer = []
 
@@ -32,24 +38,31 @@ class DataPath:
 
     def alu(self, sel):
         if sel == Opcode.MOD:
-            self.acc = self.acc % self.data_memory[self.addr]
+            self.acc = self.acc['term'][1] % self.data_memory[self.addr]['term'][1]
         elif sel == Opcode.SUB:
-            self.acc = self.acc - self.data_memory[self.addr]
+            self.acc = self.acc['term'][1] - self.data_memory[self.addr]['term'][1]
         elif sel == Opcode.CMP:
-            if self.acc == self.data_memory[self.addr]:
-                self.acc = 0
+            if self.addr == "SR":
+                self.addr = 0
+                if self.acc['term'][1] == self.sr:
+                    self.acc = 0
+                else:
+                    self.acc = 1
             else:
-                self.acc = 1
+                if self.acc['term'][1] == self.data_memory[self.addr]['term'][1]:
+                    self.acc = 0
+                else:
+                    self.acc = 1
         elif sel == Opcode.ADD:
-            self.acc = self.acc + self.data_memory[self.addr]
+            self.acc = self.acc['term'][1] + self.data_memory[self.addr]['term'][1]
         else:
             raise AttributeError
 
     def latch_acc(self, sel):
         if sel == Opcode.INC:
-            self.acc = self.acc + 1
+            self.acc = self.acc['term'][1] + 1
         elif sel == Opcode.DEC:
-            self.acc = self.acc - 1
+            self.acc = self.acc['term'][1] - 1
         elif sel == Opcode.MOD or sel == Opcode.SUB or sel == Opcode.ADD or sel == Opcode.CMP:
             self.alu(sel)
         elif sel == Opcode.LD_VAL:
@@ -68,11 +81,12 @@ class DataPath:
 
 class ControlUnit:
 
-    def __init__(self, start, data_path):
+    def __init__(self, start, data_path, device_file):
         self.interrupt = 0
         self.data_path = data_path
         self.ip = start
         self._tick = 0
+        self.device_file = device_file
 
     def tick(self):
         self._tick += 1
@@ -84,16 +98,23 @@ class ControlUnit:
         if sel:
             self.ip += 1
         else:
-            self.ip = self.data_path.data_memory[self.ip]["term"].argument
+            self.ip = self.data_path.data_memory[self.ip]["term"][1]
+
+    def latch_sr(self):
+        with open(self.device_file, encoding="utf-8") as file:
+            arg = file.read()
+            if arg != '':
+                self.data_path.sr = int(arg)
 
     def decode_and_execute_instruction(self):
 
-        print(self.ip)
-
         instr = self.data_path.data_memory[self.ip]
-        opcode = instr["opcode"]
+        opcode = instr["term"][0]
 
-        print(instr)
+        if is_int(str(instr["term"][1])):
+            argument = int(instr["term"][1])
+        else:
+            argument = str(instr["term"][1])
 
         if opcode is Opcode.HLT:
             raise StopIteration()
@@ -110,21 +131,17 @@ class ControlUnit:
             self.tick()
 
         elif opcode in {Opcode.LD_ADDR, Opcode.ADD, Opcode.SUB, Opcode.MOD}:
-            self.data_path.addr = instr["term"].argument
+            self.data_path.addr = argument
             self.tick()
             self.data_path.latch_acc(opcode)
             self.latch_ip(True)
             self.tick()
 
         elif opcode is Opcode.CMP:
-            if instr["term"].argument == "SR":
-                # So? You should create a new project, were you will create a new file with name - SR.
-                # In original project you will take SR value
-                self.data_path.addr = self.data_path.acc
-            else:
-                self.data_path.addr = instr["term"].argument
+            if argument == "SR":
+                self.latch_sr()
 
-            self.data_path.addr = instr["term"].argument
+            self.data_path.addr = argument
             self.tick()
             self.data_path.latch_acc(opcode)
             self.latch_ip(True)
@@ -137,10 +154,10 @@ class ControlUnit:
 
         elif opcode is Opcode.LD_VAL:
 
-            if instr["term"].argument == "AC":
+            if argument == "AC":
                 self.data_path.addr = self.data_path.acc
             else:
-                self.data_path.addr = instr["term"].argument
+                self.data_path.addr = argument
 
             self.tick()
             self.data_path.latch_acc(opcode)
@@ -148,58 +165,67 @@ class ControlUnit:
             self.tick()
 
         elif opcode is Opcode.ST:
-            self.data_path.addr = instr["term"].argument
+            self.data_path.addr = argument
             self.tick()
             self.data_path.data_memory[self.data_path.addr] = self.data_path.acc
             self.latch_ip(True)
             self.tick()
 
         elif opcode is Opcode.IN:
-            if instr["term"].argument:
-                self.interrupt = instr["term"].argument
+            if argument == 0:
+                self.interrupt = argument
                 self.tick()
                 self.data_path.vector[self.interrupt] = [self.data_path.addr, self.ip]
                 self.ip = self.data_path.data_memory[self.interrupt]
                 self.tick()
+                print("IN ARG")
             else:
                 if len(self.data_path.input_buffer) == 0:
                     raise EOFError()
                 symbol = self.data_path.input_buffer.pop(0)
-                self.data_path.acc = symbol
                 logging.debug('input: %s', repr(symbol))
+                self.data_path.acc = symbol
+                self.data_path.acc = {'term': ['data', symbol]}
                 self.latch_ip(True)
                 self.tick()
-                if self.interrupt:
+                print("IN")
+                if self.interrupt == 0:
                     self.data_path.addr, self.ip = self.data_path.vector[self.interrupt]
                     self.tick()
+                    self.latch_ip(True)
                     self.interrupt = 0
+                    self.tick()
 
         elif opcode is Opcode.OUT:
-            if instr["term"].argument:
-                self.interrupt = int(instr["term"].argument)
+            if argument == 11:
+                self.interrupt = argument
                 self.tick()
                 self.data_path.vector[self.interrupt] = [self.data_path.addr, self.data_path.acc, self.ip]
                 self.ip = self.data_path.data_memory[self.interrupt]
                 self.tick()
+                print("OUT ARG")
             else:
-                symbol = str(self.data_path.acc)
+                symbol = str(self.data_path.acc["term"][1])
                 self.tick()
                 logging.debug('output: %s << %s', repr(''.join(self.data_path.output_buffer)), repr(symbol))
                 self.data_path.output_buffer.append(symbol)
                 self.latch_ip(True)
                 self.tick()
+                print("OUT")
                 if self.interrupt:
                     self.data_path.addr, self.data_path.acc, self.ip = self.data_path.vector[self.interrupt]
                     self.tick()
+                    self.latch_ip(True)
                     self.interrupt = 0
+                    self.tick()
 
         elif opcode is Opcode.DATA:
             self.data_path.addr = self.ip
             self.tick()
-            if is_int(instr["term"].argument):
-                self.data_path.data_memory[self.data_path.addr] = int(instr["term"].argument)
-            else:
-                self.data_path.data_memory[self.data_path.addr] = instr["term"].argument
+            # if is_int(argument):
+            #     self.data_path.data_memory[self.data_path.addr] = int(argument)
+            # else:
+            self.data_path.data_memory[self.data_path.addr] = argument
             self.latch_ip(True)
             self.tick()
 
@@ -207,19 +233,22 @@ class ControlUnit:
             raise AttributeError
 
     def __repr__(self):
-        state = "{{TICK: {}, IP: {}, ADDR: {}, DATA: {}, ACC: {}}}".format(
+        state = "{{TICK: {}, IP: {}, ADDR: {}, DATA: {}, ACC: {}, SR: {}}}".format(
             self._tick,
             self.ip,
             self.data_path.addr,
             self.data_path.data_memory[self.data_path.addr],
             self.data_path.acc,
+            self.data_path.sr,
         )
 
         instr = self.data_path.data_memory[self.ip]
-        opcode = instr["opcode"]
-        if instr["term"].argument == []:
+        opcode = instr["term"][0]
+        argument = instr["term"][1]
+
+        if argument == []:
             action = "{}".format(opcode)
         else:
-            action = "{} {}".format(opcode, instr["term"].argument)
+            action = "{} {}".format(opcode, argument)
 
         return "{} {}".format(state, action)

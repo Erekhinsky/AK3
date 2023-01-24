@@ -1,48 +1,36 @@
 [
     {
-        "opcode": "data",
         "term": [
-            0,
             "data",
             "1"
         ]
     },
     {
-        "opcode": "LD_VAL",
         "term": [
-            1,
             "LD_VAL",
             0
         ]
     },
     {
-        "opcode": "CMP",
         "term": [
-            2,
             "CMP",
             "SR"
         ]
     },
     {
-        "opcode": "JE",
         "term": [
-            3,
             "JE",
             5
         ]
     },
     {
-        "opcode": "JMP",
         "term": [
-            4,
             "JMP",
             1
         ]
     },
     {
-        "opcode": "IN",
         "term": [
-            5,
             "IN",
             []
         ]

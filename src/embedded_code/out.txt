@@ -9,4 +9,5 @@ CMP SR
 JE :out:
 JMP :loop:
 :out:
+LD_VAL ACC
 OUT
