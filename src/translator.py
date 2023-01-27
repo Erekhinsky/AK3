@@ -119,8 +119,6 @@ def read_code(filename, offset):
 
         instr['term'][0] = Opcode(instr['term'][0])
 
-        print(instr)    ###############################################
-
     offset += len(code)
 
     return code, start, offset

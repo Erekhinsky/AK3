@@ -16,8 +16,8 @@ CUR_ADDR 0
 END '\0'
 :start:
 LD_ADDR L1
-ST CUR_ADDR
 :loop:
+ST CUR_ADDR
 LD_VAL AC
 CMP END
 JE :exit:
@@ -26,7 +26,6 @@ LD_VAL AC
 OUT 1
 LD_VAL CUR_ADDR
 INC
-ST CUR_ADDR
 JMP :loop:
 :exit:
 HLT

@@ -81,8 +81,8 @@ class Simulator:
             for char in input_text:
                 input_token.append(char)
 
-        self.data_path = DataPath(self.data_memory_size, input_token, [start_in, start_out], embedded_code_in + embedded_code_out + code)
-        self.control_unit = ControlUnit(start_code, self.data_path, self.device_file)
+        self.data_path = DataPath(self.data_memory_size, input_token, [start_in, start_out], embedded_code_in + embedded_code_out + code, self.device_file)
+        self.control_unit = ControlUnit(start_code, self.data_path)
 
         logging.debug("%s", self.control_unit)
         try:

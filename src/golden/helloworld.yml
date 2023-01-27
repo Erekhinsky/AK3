@@ -1,0 +1,415 @@
+source: |-
+    :data:
+    L1 'H'
+    L2 'e'
+    L3 'l'
+    L4 'l'
+    L5 'o'
+    L6 ' '
+    L7 'W'
+    L8 'o'
+    L9 'r'
+    L10 'l'
+    L11 'd'
+    L12 '!'
+    L13 '\0'
+    CUR_ADDR 0
+    END '\0'
+    :start:
+    LD_ADDR L1
+    :loop:
+    ST CUR_ADDR
+    LD_VAL AC
+    CMP END
+    JE :exit:
+    LD_VAL CUR_ADDR
+    LD_VAL AC
+    OUT 1
+    LD_VAL CUR_ADDR
+    INC
+    JMP :loop:
+    :exit:
+    HLT
+input: |-
+    foo
+code: |-
+    [
+        {
+            "term": [
+                "data",
+                "H"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "e"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "l"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "l"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "o"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                " "
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "W"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "o"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "r"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "l"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "d"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "!"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "\\0"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "0"
+            ]
+        },
+        {
+            "term": [
+                "data",
+                "\\0"
+            ]
+        },
+        {
+            "term": [
+                "LD_ADDR",
+                0
+            ]
+        },
+        {
+            "term": [
+                "ST",
+                13
+            ]
+        },
+        {
+            "term": [
+                "LD_VAL",
+                "AC"
+            ]
+        },
+        {
+            "term": [
+                "CMP",
+                14
+            ]
+        },
+        {
+            "term": [
+                "JE",
+                26
+            ]
+        },
+        {
+            "term": [
+                "LD_VAL",
+                13
+            ]
+        },
+        {
+            "term": [
+                "LD_VAL",
+                "AC"
+            ]
+        },
+        {
+            "term": [
+                "OUT",
+                "1"
+            ]
+        },
+        {
+            "term": [
+                "LD_VAL",
+                13
+            ]
+        },
+        {
+            "term": [
+                "INC",
+                []
+            ]
+        },
+        {
+            "term": [
+                "JMP",
+                16
+            ]
+        },
+        {
+            "term": [
+                "HLT",
+                []
+            ]
+        }
+    ]
+output: |
+    source LoC: 57 code instr: 27
+    Hello World!
+    instr_counter: 197 ticks: 345
+log: |
+    DEBUG:root:{TICK: 0, IP: 32, ADDR: 0, DATA: 3, ACC: 0, SR: 0} LD_ADDR 17
+    DEBUG:root:{TICK: 2, IP: 33, ADDR: 17, DATA: {'term': [<Opcode.DATA: 'data'>, 'H']}, ACC: {'term': ['data', 17]}, SR: 0} ST 30
+    DEBUG:root:{TICK: 4, IP: 34, ADDR: 30, DATA: {'term': ['data', 17]}, ACC: {'term': ['data', 17]}, SR: 0} LD_VAL AC
+    DEBUG:root:{TICK: 6, IP: 35, ADDR: 17, DATA: {'term': [<Opcode.DATA: 'data'>, 'H']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'H']}, SR: 0} CMP 31
+    DEBUG:root:{TICK: 8, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 0} JE 43
+    DEBUG:root:{TICK: 9, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 0} LD_VAL 30
+    DEBUG:root:{TICK: 11, IP: 38, ADDR: 30, DATA: {'term': ['data', 17]}, ACC: {'term': ['data', 17]}, SR: 0} LD_VAL AC
+    DEBUG:root:{TICK: 13, IP: 39, ADDR: 17, DATA: {'term': [<Opcode.DATA: 'data'>, 'H']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'H']}, SR: 0} OUT 1
+    DEBUG:root:{TICK: 15, IP: 10, ADDR: 17, DATA: {'term': [<Opcode.DATA: 'data'>, 'H']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'H']}, SR: 0} ST 8
+    DEBUG:root:{TICK: 17, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'H']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'H']}, SR: 0} LD_VAL 9
+    DEBUG:root:{TICK: 19, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 0} CMP SR
+    DEBUG:root:{TICK: 21, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 22, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 24, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'H']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'H']}, SR: 3} OUT
+    DEBUG:root:output: '' << 'H'
+    DEBUG:root:{TICK: 26, IP: 40, ADDR: 17, DATA: {'term': [<Opcode.DATA: 'data'>, 'H']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'H']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 28, IP: 41, ADDR: 30, DATA: {'term': ['data', 17]}, ACC: {'term': ['data', 17]}, SR: 3} INC
+    DEBUG:root:{TICK: 29, IP: 42, ADDR: 30, DATA: {'term': ['data', 17]}, ACC: {'term': ['data', 18]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 30, IP: 33, ADDR: 30, DATA: {'term': ['data', 17]}, ACC: {'term': ['data', 18]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 32, IP: 34, ADDR: 30, DATA: {'term': ['data', 18]}, ACC: {'term': ['data', 18]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 34, IP: 35, ADDR: 18, DATA: {'term': [<Opcode.DATA: 'data'>, 'e']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'e']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 36, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 37, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 39, IP: 38, ADDR: 30, DATA: {'term': ['data', 18]}, ACC: {'term': ['data', 18]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 41, IP: 39, ADDR: 18, DATA: {'term': [<Opcode.DATA: 'data'>, 'e']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'e']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 43, IP: 10, ADDR: 18, DATA: {'term': [<Opcode.DATA: 'data'>, 'e']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'e']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 45, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'e']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'e']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 47, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 49, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 50, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 52, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'e']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'e']}, SR: 3} OUT
+    DEBUG:root:output: 'H' << 'e'
+    DEBUG:root:{TICK: 54, IP: 40, ADDR: 18, DATA: {'term': [<Opcode.DATA: 'data'>, 'e']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'e']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 56, IP: 41, ADDR: 30, DATA: {'term': ['data', 18]}, ACC: {'term': ['data', 18]}, SR: 3} INC
+    DEBUG:root:{TICK: 57, IP: 42, ADDR: 30, DATA: {'term': ['data', 18]}, ACC: {'term': ['data', 19]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 58, IP: 33, ADDR: 30, DATA: {'term': ['data', 18]}, ACC: {'term': ['data', 19]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 60, IP: 34, ADDR: 30, DATA: {'term': ['data', 19]}, ACC: {'term': ['data', 19]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 62, IP: 35, ADDR: 19, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 64, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 65, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 67, IP: 38, ADDR: 30, DATA: {'term': ['data', 19]}, ACC: {'term': ['data', 19]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 69, IP: 39, ADDR: 19, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 71, IP: 10, ADDR: 19, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 73, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 75, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 77, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 78, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 80, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} OUT
+    DEBUG:root:output: 'He' << 'l'
+    DEBUG:root:{TICK: 82, IP: 40, ADDR: 19, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 84, IP: 41, ADDR: 30, DATA: {'term': ['data', 19]}, ACC: {'term': ['data', 19]}, SR: 3} INC
+    DEBUG:root:{TICK: 85, IP: 42, ADDR: 30, DATA: {'term': ['data', 19]}, ACC: {'term': ['data', 20]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 86, IP: 33, ADDR: 30, DATA: {'term': ['data', 19]}, ACC: {'term': ['data', 20]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 88, IP: 34, ADDR: 30, DATA: {'term': ['data', 20]}, ACC: {'term': ['data', 20]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 90, IP: 35, ADDR: 20, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 92, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 93, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 95, IP: 38, ADDR: 30, DATA: {'term': ['data', 20]}, ACC: {'term': ['data', 20]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 97, IP: 39, ADDR: 20, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 99, IP: 10, ADDR: 20, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 101, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 103, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 105, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 106, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 108, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} OUT
+    DEBUG:root:output: 'Hel' << 'l'
+    DEBUG:root:{TICK: 110, IP: 40, ADDR: 20, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 112, IP: 41, ADDR: 30, DATA: {'term': ['data', 20]}, ACC: {'term': ['data', 20]}, SR: 3} INC
+    DEBUG:root:{TICK: 113, IP: 42, ADDR: 30, DATA: {'term': ['data', 20]}, ACC: {'term': ['data', 21]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 114, IP: 33, ADDR: 30, DATA: {'term': ['data', 20]}, ACC: {'term': ['data', 21]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 116, IP: 34, ADDR: 30, DATA: {'term': ['data', 21]}, ACC: {'term': ['data', 21]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 118, IP: 35, ADDR: 21, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 120, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 121, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 123, IP: 38, ADDR: 30, DATA: {'term': ['data', 21]}, ACC: {'term': ['data', 21]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 125, IP: 39, ADDR: 21, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 127, IP: 10, ADDR: 21, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 129, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 131, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 133, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 134, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 136, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} OUT
+    DEBUG:root:output: 'Hell' << 'o'
+    DEBUG:root:{TICK: 138, IP: 40, ADDR: 21, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 140, IP: 41, ADDR: 30, DATA: {'term': ['data', 21]}, ACC: {'term': ['data', 21]}, SR: 3} INC
+    DEBUG:root:{TICK: 141, IP: 42, ADDR: 30, DATA: {'term': ['data', 21]}, ACC: {'term': ['data', 22]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 142, IP: 33, ADDR: 30, DATA: {'term': ['data', 21]}, ACC: {'term': ['data', 22]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 144, IP: 34, ADDR: 30, DATA: {'term': ['data', 22]}, ACC: {'term': ['data', 22]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 146, IP: 35, ADDR: 22, DATA: {'term': [<Opcode.DATA: 'data'>, ' ']}, ACC: {'term': [<Opcode.DATA: 'data'>, ' ']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 148, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 149, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 151, IP: 38, ADDR: 30, DATA: {'term': ['data', 22]}, ACC: {'term': ['data', 22]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 153, IP: 39, ADDR: 22, DATA: {'term': [<Opcode.DATA: 'data'>, ' ']}, ACC: {'term': [<Opcode.DATA: 'data'>, ' ']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 155, IP: 10, ADDR: 22, DATA: {'term': [<Opcode.DATA: 'data'>, ' ']}, ACC: {'term': [<Opcode.DATA: 'data'>, ' ']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 157, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, ' ']}, ACC: {'term': [<Opcode.DATA: 'data'>, ' ']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 159, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 161, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 162, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 164, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, ' ']}, ACC: {'term': [<Opcode.DATA: 'data'>, ' ']}, SR: 3} OUT
+    DEBUG:root:output: 'Hello' << ' '
+    DEBUG:root:{TICK: 166, IP: 40, ADDR: 22, DATA: {'term': [<Opcode.DATA: 'data'>, ' ']}, ACC: {'term': [<Opcode.DATA: 'data'>, ' ']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 168, IP: 41, ADDR: 30, DATA: {'term': ['data', 22]}, ACC: {'term': ['data', 22]}, SR: 3} INC
+    DEBUG:root:{TICK: 169, IP: 42, ADDR: 30, DATA: {'term': ['data', 22]}, ACC: {'term': ['data', 23]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 170, IP: 33, ADDR: 30, DATA: {'term': ['data', 22]}, ACC: {'term': ['data', 23]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 172, IP: 34, ADDR: 30, DATA: {'term': ['data', 23]}, ACC: {'term': ['data', 23]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 174, IP: 35, ADDR: 23, DATA: {'term': [<Opcode.DATA: 'data'>, 'W']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'W']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 176, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 177, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 179, IP: 38, ADDR: 30, DATA: {'term': ['data', 23]}, ACC: {'term': ['data', 23]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 181, IP: 39, ADDR: 23, DATA: {'term': [<Opcode.DATA: 'data'>, 'W']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'W']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 183, IP: 10, ADDR: 23, DATA: {'term': [<Opcode.DATA: 'data'>, 'W']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'W']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 185, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'W']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'W']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 187, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 189, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 190, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 192, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'W']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'W']}, SR: 3} OUT
+    DEBUG:root:output: 'Hello ' << 'W'
+    DEBUG:root:{TICK: 194, IP: 40, ADDR: 23, DATA: {'term': [<Opcode.DATA: 'data'>, 'W']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'W']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 196, IP: 41, ADDR: 30, DATA: {'term': ['data', 23]}, ACC: {'term': ['data', 23]}, SR: 3} INC
+    DEBUG:root:{TICK: 197, IP: 42, ADDR: 30, DATA: {'term': ['data', 23]}, ACC: {'term': ['data', 24]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 198, IP: 33, ADDR: 30, DATA: {'term': ['data', 23]}, ACC: {'term': ['data', 24]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 200, IP: 34, ADDR: 30, DATA: {'term': ['data', 24]}, ACC: {'term': ['data', 24]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 202, IP: 35, ADDR: 24, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 204, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 205, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 207, IP: 38, ADDR: 30, DATA: {'term': ['data', 24]}, ACC: {'term': ['data', 24]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 209, IP: 39, ADDR: 24, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 211, IP: 10, ADDR: 24, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 213, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 215, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 217, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 218, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 220, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} OUT
+    DEBUG:root:output: 'Hello W' << 'o'
+    DEBUG:root:{TICK: 222, IP: 40, ADDR: 24, DATA: {'term': [<Opcode.DATA: 'data'>, 'o']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'o']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 224, IP: 41, ADDR: 30, DATA: {'term': ['data', 24]}, ACC: {'term': ['data', 24]}, SR: 3} INC
+    DEBUG:root:{TICK: 225, IP: 42, ADDR: 30, DATA: {'term': ['data', 24]}, ACC: {'term': ['data', 25]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 226, IP: 33, ADDR: 30, DATA: {'term': ['data', 24]}, ACC: {'term': ['data', 25]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 228, IP: 34, ADDR: 30, DATA: {'term': ['data', 25]}, ACC: {'term': ['data', 25]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 230, IP: 35, ADDR: 25, DATA: {'term': [<Opcode.DATA: 'data'>, 'r']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'r']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 232, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 233, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 235, IP: 38, ADDR: 30, DATA: {'term': ['data', 25]}, ACC: {'term': ['data', 25]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 237, IP: 39, ADDR: 25, DATA: {'term': [<Opcode.DATA: 'data'>, 'r']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'r']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 239, IP: 10, ADDR: 25, DATA: {'term': [<Opcode.DATA: 'data'>, 'r']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'r']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 241, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'r']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'r']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 243, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 245, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 246, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 248, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'r']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'r']}, SR: 3} OUT
+    DEBUG:root:output: 'Hello Wo' << 'r'
+    DEBUG:root:{TICK: 250, IP: 40, ADDR: 25, DATA: {'term': [<Opcode.DATA: 'data'>, 'r']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'r']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 252, IP: 41, ADDR: 30, DATA: {'term': ['data', 25]}, ACC: {'term': ['data', 25]}, SR: 3} INC
+    DEBUG:root:{TICK: 253, IP: 42, ADDR: 30, DATA: {'term': ['data', 25]}, ACC: {'term': ['data', 26]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 254, IP: 33, ADDR: 30, DATA: {'term': ['data', 25]}, ACC: {'term': ['data', 26]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 256, IP: 34, ADDR: 30, DATA: {'term': ['data', 26]}, ACC: {'term': ['data', 26]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 258, IP: 35, ADDR: 26, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 260, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 261, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 263, IP: 38, ADDR: 30, DATA: {'term': ['data', 26]}, ACC: {'term': ['data', 26]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 265, IP: 39, ADDR: 26, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 267, IP: 10, ADDR: 26, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 269, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 271, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 273, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 274, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 276, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} OUT
+    DEBUG:root:output: 'Hello Wor' << 'l'
+    DEBUG:root:{TICK: 278, IP: 40, ADDR: 26, DATA: {'term': [<Opcode.DATA: 'data'>, 'l']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'l']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 280, IP: 41, ADDR: 30, DATA: {'term': ['data', 26]}, ACC: {'term': ['data', 26]}, SR: 3} INC
+    DEBUG:root:{TICK: 281, IP: 42, ADDR: 30, DATA: {'term': ['data', 26]}, ACC: {'term': ['data', 27]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 282, IP: 33, ADDR: 30, DATA: {'term': ['data', 26]}, ACC: {'term': ['data', 27]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 284, IP: 34, ADDR: 30, DATA: {'term': ['data', 27]}, ACC: {'term': ['data', 27]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 286, IP: 35, ADDR: 27, DATA: {'term': [<Opcode.DATA: 'data'>, 'd']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'd']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 288, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 289, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 291, IP: 38, ADDR: 30, DATA: {'term': ['data', 27]}, ACC: {'term': ['data', 27]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 293, IP: 39, ADDR: 27, DATA: {'term': [<Opcode.DATA: 'data'>, 'd']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'd']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 295, IP: 10, ADDR: 27, DATA: {'term': [<Opcode.DATA: 'data'>, 'd']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'd']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 297, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'd']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'd']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 299, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 301, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 302, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 304, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, 'd']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'd']}, SR: 3} OUT
+    DEBUG:root:output: 'Hello Worl' << 'd'
+    DEBUG:root:{TICK: 306, IP: 40, ADDR: 27, DATA: {'term': [<Opcode.DATA: 'data'>, 'd']}, ACC: {'term': [<Opcode.DATA: 'data'>, 'd']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 308, IP: 41, ADDR: 30, DATA: {'term': ['data', 27]}, ACC: {'term': ['data', 27]}, SR: 3} INC
+    DEBUG:root:{TICK: 309, IP: 42, ADDR: 30, DATA: {'term': ['data', 27]}, ACC: {'term': ['data', 28]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 310, IP: 33, ADDR: 30, DATA: {'term': ['data', 27]}, ACC: {'term': ['data', 28]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 312, IP: 34, ADDR: 30, DATA: {'term': ['data', 28]}, ACC: {'term': ['data', 28]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 314, IP: 35, ADDR: 28, DATA: {'term': [<Opcode.DATA: 'data'>, '!']}, ACC: {'term': [<Opcode.DATA: 'data'>, '!']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 316, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 317, IP: 37, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 1]}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 319, IP: 38, ADDR: 30, DATA: {'term': ['data', 28]}, ACC: {'term': ['data', 28]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 321, IP: 39, ADDR: 28, DATA: {'term': [<Opcode.DATA: 'data'>, '!']}, ACC: {'term': [<Opcode.DATA: 'data'>, '!']}, SR: 3} OUT 1
+    DEBUG:root:{TICK: 323, IP: 10, ADDR: 28, DATA: {'term': [<Opcode.DATA: 'data'>, '!']}, ACC: {'term': [<Opcode.DATA: 'data'>, '!']}, SR: 3} ST 8
+    DEBUG:root:{TICK: 325, IP: 11, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, '!']}, ACC: {'term': [<Opcode.DATA: 'data'>, '!']}, SR: 3} LD_VAL 9
+    DEBUG:root:{TICK: 327, IP: 12, ADDR: 9, DATA: {'term': [<Opcode.DATA: 'data'>, 2]}, ACC: {'term': [<Opcode.DATA: 'data'>, 2]}, SR: 3} CMP SR
+    DEBUG:root:{TICK: 329, IP: 13, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} JE 15
+    DEBUG:root:{TICK: 330, IP: 15, ADDR: 0, DATA: 3, ACC: {'term': ['data', 0]}, SR: 3} LD_VAL 8
+    DEBUG:root:{TICK: 332, IP: 16, ADDR: 8, DATA: {'term': [<Opcode.DATA: 'data'>, '!']}, ACC: {'term': [<Opcode.DATA: 'data'>, '!']}, SR: 3} OUT
+    DEBUG:root:output: 'Hello World' << '!'
+    DEBUG:root:{TICK: 334, IP: 40, ADDR: 28, DATA: {'term': [<Opcode.DATA: 'data'>, '!']}, ACC: {'term': [<Opcode.DATA: 'data'>, '!']}, SR: 3} LD_VAL 30
+    DEBUG:root:{TICK: 336, IP: 41, ADDR: 30, DATA: {'term': ['data', 28]}, ACC: {'term': ['data', 28]}, SR: 3} INC
+    DEBUG:root:{TICK: 337, IP: 42, ADDR: 30, DATA: {'term': ['data', 28]}, ACC: {'term': ['data', 29]}, SR: 3} JMP 33
+    DEBUG:root:{TICK: 338, IP: 33, ADDR: 30, DATA: {'term': ['data', 28]}, ACC: {'term': ['data', 29]}, SR: 3} ST 30
+    DEBUG:root:{TICK: 340, IP: 34, ADDR: 30, DATA: {'term': ['data', 29]}, ACC: {'term': ['data', 29]}, SR: 3} LD_VAL AC
+    DEBUG:root:{TICK: 342, IP: 35, ADDR: 29, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': [<Opcode.DATA: 'data'>, '\\0']}, SR: 3} CMP 31
+    DEBUG:root:{TICK: 344, IP: 36, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 0]}, SR: 3} JE 43
+    DEBUG:root:{TICK: 345, IP: 43, ADDR: 31, DATA: {'term': [<Opcode.DATA: 'data'>, '\\0']}, ACC: {'term': ['data', 0]}, SR: 3} HLT
+    INFO:root:output_buffer: 'Hello World!'
